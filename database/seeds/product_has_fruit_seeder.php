@@ -1,9 +1,9 @@
 <?php
 
-use App\FruitModel;
+use App\product_has_fruit;
 use Illuminate\Database\Seeder;
 
-class FruitSeeder extends Seeder
+class product_has_fruit_seeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class FruitSeeder extends Seeder
      */
     public function run()
     {
-        factory(FruitModel::class, 6)->create();
+        factory(product_has_fruit::class, 3)->create();
     }
 }

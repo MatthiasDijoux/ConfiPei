@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrderModel extends Model
+class product_has_fruit extends Model
 {
-    protected $table = "order";
+    protected $table = "product_has_fruit";
     public $timestamps = false;
-    
 }

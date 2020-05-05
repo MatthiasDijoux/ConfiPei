@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             RewardSeeder::class,
             FruitSeeder::class,
             UserSeeder::class,
-            ProductSeeder::class
+            ProductSeeder::class,
+            product_has_fruit_seeder::class,
             ]);
     }
 }
