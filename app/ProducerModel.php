@@ -10,4 +10,10 @@ class ProducerModel extends Model
     protected $fillable = [
         'name'
     ];
-    public $timestamps = false;}
+    public $timestamps = false;
+
+    function products()
+    {
+        return $this->hasMany(ProductModel::class, 'id_producer');
+    }
+}

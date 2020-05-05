@@ -15,7 +15,7 @@ class CreateTableOrderHasProduct extends Migration
     {
         Schema::create('order_has_product', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
 
         });
     }

@@ -16,4 +16,5 @@ class RoleModel extends Model
     {
         return $this->belongsToMany(UserModel::class, 'id_role');
     }
+    
 }

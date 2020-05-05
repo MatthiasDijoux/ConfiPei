@@ -13,4 +13,8 @@ class UserModel extends Model
     {
         return $this->belongsToMany(UserModel::class, 'id_role');
     }
+    function users()
+    {
+        return $this->belongsToMany('App\UserModel', 'user_has_order', 'id_user', 'id_order');
+    }
 }
