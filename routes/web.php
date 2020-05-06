@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function(){
-    return view('home.main');
+Route::prefix('/')->group(function(){
+    Route::get('/', 'AdminController@index');
+    Route::get('/{any}', 'AdminController@index')->where('any','.*');
 });

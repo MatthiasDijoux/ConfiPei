@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductModel extends Model
 {
     protected $table = "product";
-    protected $fillable = ['name', 'quantity'];
+    protected $fillable = ['name', 'id_producer', 'prix'];
     public $timestamps = false;
 
     function producers()
@@ -16,12 +16,13 @@ class ProductModel extends Model
     }
     function rewards()
     {
-        return $this->belongsToMany('App\RewardModel', 'product_has_reward', 'id_product', 'id_reward');
+        return $this->belongsToMany(RewardModel::class, 'product_has_reward', 'id_product', 'id_reward');
     }
     function fruits()
     {
-        return $this->belongsToMany('App\FruitModel', 'product_has_fruit', 'id_product', 'id_fruit');
+        return $this->belongsToMany(FruitModel::class, 'product_has_fruit', 'id_product', 'id_fruit');
     }
+    //TODO */
     function users()
     {
         return $this->belongsToMany('App\UserModel', 'user_has_order', 'id_user', 'id_order');

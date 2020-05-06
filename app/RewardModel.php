@@ -16,4 +16,9 @@ class RewardModel extends Model
     {
         return $this->belongsToMany('App\UserModel', 'user_has_order', 'id_user', 'id_order');
     }
+    function rewards()
+    {
+        return $this->belongsToMany('App\RewardModel', 'product_has_reward', 'id_product', 'id_reward');
+    }
+
 }

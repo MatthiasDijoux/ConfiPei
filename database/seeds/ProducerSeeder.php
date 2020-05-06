@@ -15,17 +15,18 @@ class ProducerSeeder extends Seeder
      */
     public function run()
     {
-        factory(ProducerModel::class, 5)->create()
-        ->each(function($u){
-            $u->products()->saveMany(factory(ProductModel::class,1)->make()
-        )
-        ->each(function($p){
-                $p->rewards()->saveMany(factory(RewardModel::class,1)->make());
-        })
-        ->each(function($p){
-            $p->fruits()->saveMany(factory(FruitModel::class,1)->make());
-    });
-        });
+        factory(ProducerModel::class, 3)->create()
+            ->each(function ($u) {
+                $u->products()->saveMany(
+                    factory(ProductModel::class, 2)->make()
+                )
+                    ->each(function ($p) {
+                        $p->rewards()->saveMany(factory(RewardModel::class, 1)->make());
+                    })
+                    ->each(function ($f) {
+                        $f->fruits()->saveMany(factory(FruitModel::class, 2)->make());
+                    });
+            });
         
     }
 }

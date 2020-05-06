@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\UserModel;
-use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
+use App\ProductModel;
 
 class UserController extends Controller
 {
     //
     function index()
     {
-       $user =  UserModel::get();
-       return $user;
+       $products =  ProductModel::with([
+           'producers',
+           'rewards',
+           'fruits', 
+       ])->get();
+       return  ProductResource::collection($products);
     }
 }

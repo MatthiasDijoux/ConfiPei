@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FruitResource extends JsonResource
+class ProducerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,6 +17,6 @@ class FruitResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-        ];
+        ]    ;
     }
 }
