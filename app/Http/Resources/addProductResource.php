@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class addProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,16 +14,11 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        //un seul producer donc New
         $producer =  new ProducerResource($this->producers);
-        
         return [
-            'id' => $this->id,
             'name' => $this->name,
-            'producer' => $producer,
-            'rewards'=>RewardResource::collection($this->whenLoaded('rewards')),
-            'fruits'=>FruitResource::collection($this->whenLoaded('fruits')),
-            'prix'=>$this->prix
+            'producer' => $producer->name,
+            'prix'=>$this->prix, 
         ];
-    }
+        }
 }

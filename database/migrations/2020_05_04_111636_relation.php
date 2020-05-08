@@ -15,7 +15,7 @@ class Relation extends Migration
 
        
 
-        Schema::table('user', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('id_role');
             $table->foreign('id_role')->references('id')->on('role');
         });
@@ -43,7 +43,7 @@ class Relation extends Migration
 
         Schema::table('user_has_order', function (Blueprint $table) {
             $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('user');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->unsignedBigInteger('id_order');
             $table->foreign('id_order')->references('id')->on('order');
         });
@@ -64,7 +64,7 @@ class Relation extends Migration
         });
 
 
-        Schema::table('user', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             Schema::disableForeignKeyConstraints();
             $table->dropForeign(['id_role']);
             $table->dropIfExists('id_role');

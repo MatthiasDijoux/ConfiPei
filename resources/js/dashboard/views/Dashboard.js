@@ -1,5 +1,6 @@
 import Axios from "axios";
-import addProduct from '../views/components/addProduct.vue'
+import addProduct from '../views/components/addProduct.vue';
+
 export default {
     components: {
         addProduct,

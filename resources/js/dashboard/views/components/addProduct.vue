@@ -13,13 +13,34 @@
         <v-container>
           <v-row>
             <v-col cols="12" sm="6" md="4">
-              <v-text-field color="teal"  v-model="product" label="Nom de la confiture*" required></v-text-field>
+              <v-text-field color="teal" v-model="product" label="Nom de la confiture*" required></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" md="4">
-              <v-select  :items="producers" item-value="id" v-model="producer" item-text="name" label="Producteur"></v-select>
+              <v-select
+                :items="producers"
+                item-value="id"
+                v-model="producer"
+                item-text="name"
+                label="Producteur"
+              ></v-select>
             </v-col>
             <v-col cols="12" sm="6" md="4">
-              <v-text-field color="teal"  v-model="prix" label="prix*" required></v-text-field>
+              <v-text-field color="teal" v-model="prix" label="prix*" required></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-autocomplete
+                v-model="fruits"
+                :loading="loading"
+                :items="fruitList"
+                :search-input.sync="search"
+                return-object
+                multiple
+                cache-items
+                hide-no-data
+                hide-details
+                placeholder="Fruits*"
+                label="Fruit"
+              ></v-autocomplete>
             </v-col>
           </v-row>
         </v-container>

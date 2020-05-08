@@ -15,6 +15,6 @@ class OrderModel extends Model
     }
     function users()
     {
-        return $this->belongsToMany('App\UserModel', 'user_has_order', 'id_user', 'id_order');
+        return $this->belongsToMany('App\User', 'user_has_order', 'id_user', 'id_order');
     }
 }

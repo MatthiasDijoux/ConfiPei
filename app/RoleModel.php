@@ -12,9 +12,9 @@ class RoleModel extends Model
     ];
     public $timestamps = false;
 
-    public function users()
+    function users()
     {
-        return $this->belongsToMany(UserModel::class, 'id_role');
+        return $this->belongsTo(User::class, 'id_role');
     }
     
 }

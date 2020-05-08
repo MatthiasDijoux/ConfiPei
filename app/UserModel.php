@@ -2,11 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as Authenticatable;;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-class UserModel extends Model
+class UserModel extends Authenticatable
 {
-    protected $table = "user";
+    use HasApiTokens, Notifiable;
+
+    protected $table = "users";
     public $timestamps = false;
 
     public function roles()

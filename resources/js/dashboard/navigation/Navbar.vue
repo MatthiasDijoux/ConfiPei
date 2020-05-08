@@ -13,6 +13,7 @@
          <router-link to="/" tag="span" style="cursor: pointer">
          Home
         </router-link>
+        <v-btn href="/api/logout" @click.native.stop>deconnexion</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 </template>
