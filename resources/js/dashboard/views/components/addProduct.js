@@ -12,19 +12,23 @@ export default {
             prix: '',
             fruits: [],
             loading: false,
-            fruitList: [],
+            fruitList: [{
+                name: "",
+            }],
             search: null,
+
         }
     },
     watch: {
         search: function (val) {
             if (val && val.length > 2) {
-                Axios.get('/api/getFruits', { params: { query: val } })
+                this.fruitList[0].name = val
+                Axios.get('/api/Fruits', { params: { query: val } })
                     .then(({ data }) => {
                         this.loading = false
 
                         data.forEach(fruit => {
-                            this.fruitList.push(fruit.name)
+                            this.fruitList.push(fruit)
                         })
                     })
             }
@@ -34,10 +38,12 @@ export default {
     methods: {
         //TODO Refaire les routes api //
         addDatas() {
+            //Le fruit doit avoir un name et un id, ou juste un name
             Axios.post('../api/addProduct', {
                 name: this.product,
                 id_producer: this.producer,
                 prix: this.prix,
+                fruits: this.fruits
             })
                 .then(response => {
                     if (response.status === 201) {
@@ -48,6 +54,9 @@ export default {
                 .catch(
                     console.log(this.product + this.producer)
                 )
+        },
+        createFruit(val){
+            console.log(val)
         },
 
         getProducer() {
@@ -62,6 +71,7 @@ export default {
     },
 
     created() {
+
         this.getProducer();
     },
 }

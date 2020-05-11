@@ -18,6 +18,6 @@ class FruitModel extends Model
     }
     function fruits()
     {
-        return $this->belongsToMany('App\FruitModel', 'product_has_reward', 'id_product', 'id_fruit');
+        return $this->belongsToMany(FruitModel::class, 'product_has_fruit', 'id_product', 'id_fruit');
     }
 }

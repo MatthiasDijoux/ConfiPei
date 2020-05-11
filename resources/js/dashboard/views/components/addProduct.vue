@@ -27,12 +27,14 @@
             <v-col cols="12" sm="6" md="4">
               <v-text-field color="teal" v-model="prix" label="prix*" required></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="6">
               <v-autocomplete
                 v-model="fruits"
                 :loading="loading"
                 :items="fruitList"
                 :search-input.sync="search"
+                item-text="name"
+                @input="createFruit"
                 return-object
                 multiple
                 cache-items
@@ -40,7 +42,13 @@
                 hide-details
                 placeholder="Fruits*"
                 label="Fruit"
-              ></v-autocomplete>
+              >
+                <template v-slot:prepend>
+                  <v-btn icon color="success" :disabled="fruits.length == 0">
+                    <v-icon>mdi-plus-circle</v-icon>
+                  </v-btn>
+                </template>
+              </v-autocomplete>
             </v-col>
           </v-row>
         </v-container>

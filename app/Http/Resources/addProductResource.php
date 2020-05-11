@@ -15,10 +15,13 @@ class addProductResource extends JsonResource
     public function toArray($request)
     {
         $producer =  new ProducerResource($this->producers);
+        $fruit =  new FruitResource($this->fruits);
+
         return [
             'name' => $this->name,
             'producer' => $producer->name,
             'prix'=>$this->prix, 
+            'fruits'=>$this->fruits,
         ];
         }
 }
