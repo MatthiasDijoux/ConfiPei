@@ -4,20 +4,32 @@ namespace App\Http\Controllers;
 
 use App\FruitModel;
 use App\Http\Resources\addProductResource;
+use App\Http\Resources\ProductResource;
 use App\ProducerModel;
 use App\ProductModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class AdminController extends Controller
+class ProductController extends Controller
 {
     //
     function index()
     {
         return view('home.main');
     }
-    function addProduct(Request $request)
+    function getProduct()
+    {
+        $products =  ProductModel::with([
+            'producers',
+            'rewards',
+            'fruits',
+        ])->get();
+        return  ProductResource::collection($products);
+    }
+
+
+    function createOrUpdate(Request $request)
     {
         $datasToAdd = Validator::make(
             $request->input(),
@@ -25,14 +37,25 @@ class AdminController extends Controller
                 "name" => "required",
                 "prix" => "required",
                 "id_producer" => "required|numeric",
-                "fruits" => ""
+                "fruits" => "",
+                "id" => "",
+                "oldFruit"=>"",
             ],
             [
                 'required' => 'Le champ :attribute est requis'
             ]
         )->validate();
+        $product = ProductModel::find($datasToAdd['id']);
+        if (!$product) {
+            $addToDb = new ProductModel;
+            Log::debug('CreateProduct');
+        } else {
+            $addToDb = $product;
+            Log::debug('UpdateProduct');
+        }
 
-        $addToDb = new ProductModel;
+
+
         $addToDb->name = $datasToAdd['name'];
         $addToDb->prix = $datasToAdd['prix'];
         $producer = ProducerModel::find($datasToAdd['id_producer']);
@@ -41,7 +64,6 @@ class AdminController extends Controller
         }
         $addToDb->producers()->associate($producer);
         $addToDb->save();
-
 
         $fruits = [];
         if (is_array($datasToAdd['fruits'])) {
@@ -54,42 +76,15 @@ class AdminController extends Controller
                     $fruits[] = $fruit->id;
                 } else {
                     return "id existe pas";
-                    //On va créer un objet par la suite fruit:{name:""}
                 }
             }
         }
         if (!empty($fruits)) {
             $addToDb->fruits()->attach($fruits);
         }
-
-        return new addProductResource($addToDb);
-    }
-
-    function updateProduct(Request $request, $id)
-    {
-        $dataUpdate = Validator::make(
-            $request->input(),
-            [
-                "name" => "required",
-                "producer" => "required",
-                "fruits" => "required",
-                "prix" => "required",
-            ]
-        )->validate();
-
-        $Producer = ProductModel::where('id', '=', $id)
-            ->first();
-            if (!$Producer){
-                return "err";
-            }
-            else{
-                $Producer->nom = $dataUpdate['nom'];
-                $Producer->producer = $dataUpdate['producer'];
-                $Producer->prix = $dataUpdate['prix'];
-                $Producer->save();
-            }
-
-
-        return ($data);
+        /* withPivot, if exist detach else attach
+         */
+        $pivot = ProductModel::wherePivotIn('id_fruit', '=', '1')->get();
+        return ($pivot);
     }
 }

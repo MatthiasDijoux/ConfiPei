@@ -1,19 +1,26 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{ on }">
-      <v-btn color="teal" fab dark small v-on="on">
-        <v-icon>mdi-plus</v-icon>
+      <v-btn color="teal" fab dark icon small v-on="on">
+        <v-icon v-if="!isModification">mdi-plus</v-icon>
+        <v-icon v-if="isModification" @click="editProduct(product)">mdi-pencil</v-icon>
       </v-btn>
     </template>
     <v-card>
       <v-card-title>
-        <span class="headline">Ajouter une confiture</span>
+        <span class="headline" v-if="!isModification">Ajouter une confiture</span>
+        <span class="headline" v-if="isModification">Modifier confiture</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12" sm="6" md="4">
-              <v-text-field color="teal" v-model="product" label="Nom de la confiture*" required></v-text-field>
+              <v-text-field
+                color="teal"
+                v-model="productName"
+                label="Nom de la confiture*"
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" md="4">
               <v-select
@@ -62,4 +69,4 @@
     </v-card>
   </v-dialog>
 </template>
-<script src="./addProduct.js">
+<script src="./dialogProduct.js">

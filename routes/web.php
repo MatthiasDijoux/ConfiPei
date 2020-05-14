@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('/')->group(function(){
-    Route::get('/', 'AdminController@index');
-    Route::get('/{any}', 'AdminController@index')->where('any','.*');
+    Route::get('/', 'ProductController@index');
+    Route::get('/{any}', 'ProductController@index')->where('any','.*');
 });

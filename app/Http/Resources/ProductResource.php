@@ -16,14 +16,15 @@ class ProductResource extends JsonResource
     {
         //un seul producer donc New
         $producer =  new ProducerResource($this->producers);
-        
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'producer' => $producer,
-            'rewards'=>RewardResource::collection($this->whenLoaded('rewards')),
-            'fruits'=>FruitResource::collection($this->whenLoaded('fruits')),
-            'prix'=>$this->prix
+            'rewards' => RewardResource::collection($this->whenLoaded('rewards')),
+            /*             'fruits'=>FruitResource::collection($this->whenLoaded('fruits')),
+ */            'fruits' => $this->fruits,
+            'prix' => $this->prix
         ];
     }
 }

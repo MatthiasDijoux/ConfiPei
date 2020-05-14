@@ -1,10 +1,8 @@
 import Axios from "axios";
-import addProduct from '../views/components/addProduct.vue';
-import editProduct from '../views/components/editProduct.vue';
+import dialogProduct from '../views/components/dialogProduct.vue';
 export default {
     components: {
-        addProduct,
-        editProduct
+        dialogProduct,
     },
     data: () => ({
         dialog: false,
@@ -19,6 +17,9 @@ export default {
             { text: "Prix", value: "prix" },
             { text: "Actions", value: "actions" },
         ],
+        editItem:{
+            name:"salut"
+        },
         products: [],
 
     }),
@@ -28,7 +29,7 @@ export default {
 
     methods: {
         initialize() {
-            Axios.get("/api/users").then(({ data }) =>
+            Axios.get("/api/products").then(({ data }) =>
                 data.data.forEach(data => {
                     this.products.push(data);
                 })
