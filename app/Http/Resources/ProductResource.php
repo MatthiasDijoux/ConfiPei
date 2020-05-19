@@ -24,7 +24,8 @@ class ProductResource extends JsonResource
             'rewards' => RewardResource::collection($this->whenLoaded('rewards')),
             /*             'fruits'=>FruitResource::collection($this->whenLoaded('fruits')),
  */            'fruits' => $this->fruits,
-            'prix' => $this->prix
+            'prix' => $this->prix,
+            'image'=>$this->image,
         ];
     }
 }

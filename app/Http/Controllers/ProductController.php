@@ -39,13 +39,13 @@ class ProductController extends Controller
                 "id_producer" => "required|numeric",
                 "fruits" => "",
                 "id" => "",
-                "oldFruit"=>"",
+                "oldFruit" => "",
             ],
             [
                 'required' => 'Le champ :attribute est requis'
             ]
         )->validate();
-        $product = ProductModel::find($datasToAdd['id']);
+        $product = ProductModel::with(['fruits', 'producers'])->find($datasToAdd['id']);
         if (!$product) {
             $addToDb = new ProductModel;
             Log::debug('CreateProduct');
@@ -58,33 +58,47 @@ class ProductController extends Controller
 
         $addToDb->name = $datasToAdd['name'];
         $addToDb->prix = $datasToAdd['prix'];
-        $producer = ProducerModel::find($datasToAdd['id_producer']);
-        if (!$producer) {
-            return 'err';
+        if ($product && isset($product->producers) && $datasToAdd['id_producer'] != $product->producers->id) {
+        } else {
+            
+            $producer = ProducerModel::find($datasToAdd['id_producer']);
+            if (!$producer) {
+                return 'err';
+            }
+            $addToDb->producers()->associate($producer);
         }
-        $addToDb->producers()->associate($producer);
+
         $addToDb->save();
 
-        $fruits = [];
-        if (is_array($datasToAdd['fruits'])) {
-            foreach ($datasToAdd['fruits'] as $_fruit) {
-                if (isset($_fruit['id'])) {
-                    $fruit = FruitModel::find($_fruit['id']);
-                    if (!$fruit) {
-                        return 'err';
-                    }
-                    $fruits[] = $fruit->id;
-                } else {
-                    return "id existe pas";
-                }
+        $confiFruits = [];
+        $clientFruits = [];
+        $detachArray = [];
+        $attachArray = [];
+
+        foreach ($datasToAdd['fruits'] as $_clientFruit) {
+            $clientFruits[] = $_clientFruit['id'];
+        }
+        if ($product && isset($product->fruits)) {
+            foreach ($product->fruits as $_fruits) {
+                $confiFruits[] = $_fruits->id;
             }
         }
-        if (!empty($fruits)) {
-            $addToDb->fruits()->attach($fruits);
+        foreach ($clientFruits as $_clientFruit) {
+            if (!in_array($_clientFruit, $confiFruits)) {
+                $attachArray[] = $_clientFruit;
+            }
         }
-        /* withPivot, if exist detach else attach
-         */
-        $pivot = ProductModel::wherePivotIn('id_fruit', '=', '1')->get();
-        return ($pivot);
+        foreach ($confiFruits as $_confiFruit) {
+            if (!in_array($_confiFruit, $clientFruits)) {
+                $detachArray[] = $_confiFruit;
+            }
+        }
+        if (!empty($detachArray)) {
+            $product->fruits()->detach($detachArray);
+        }
+        if (!empty($attachArray)) {
+            $product->fruits()->attach($attachArray);
+        }
+        return new ProductResource($product);
     }
 }

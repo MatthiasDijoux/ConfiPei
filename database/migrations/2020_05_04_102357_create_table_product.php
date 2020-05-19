@@ -17,6 +17,7 @@ class CreateTableProduct extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('prix')->nullable();
+            $table->string('image')->nullable();
         });
     }
 

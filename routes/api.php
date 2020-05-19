@@ -23,3 +23,4 @@ Route::post('updateProduct', 'ProductController@createOrUpdate');
 Route::get('Fruits', 'FruitController@index');
 Route::post('/login', 'AuthController@login');
 Route::middleware('auth:api')->get('/logout', 'AuthController@logout');
+Route::post('uploadImage/{id}', 'imageController@imageUpload')->where('id', "[0-9]+");

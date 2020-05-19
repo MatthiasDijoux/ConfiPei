@@ -1,6 +1,9 @@
-import Axios from "axios"
-
+import Axios from "axios";
+import uploadImage from "./uploadImage.vue";
 export default {
+    components: {
+        uploadImage,
+    },
     props: {
         product: {
             default: function () {
@@ -24,6 +27,7 @@ export default {
             producers: [],
             prix: '',
             id: '',
+            image: '',
             fruits: [],
             loading: false,
             fruitList: [],
@@ -51,21 +55,53 @@ export default {
             //Le fruit doit avoir un name et un id, ou juste un name
             Axios.post('../api/updateProduct', {
                 name: this.productName,
-                id_producer: this.producer.id,
+                id_producer: this.producer,
                 prix: this.prix,
                 fruits: this.fruits,
-                id: this.product.id
+                id: this.id
             })
                 .then(response => {
-                    if (response.status === 201) {
+                    if (response.status === 200) {
                         console.log("Données enregistrée")
-                        console.log(this.product.id)
+                        console.log(response.data)
                         this.$emit('addProduct', response.data)
                     }
                 })
                 .catch(
-                    console.log(this.productName + this.producer)
+                    console.log("erreur")
                 )
+        },
+
+        onFileChange(file) {
+            let image = new Image;
+            let reader = new FileReader;
+
+            reader.onload = (file) => {
+                console.log(file)
+                this.image = file.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+
+        uploadImage() {
+            console.log('upload')
+            let url = ""
+            if (!this.product.id) {
+                url = '/api/uploadImage/'
+            }
+            else {
+                url = '/api/uploadImage/' + this.product.id
+            }
+            console.log(url)
+            axios.post(url, {
+                image: this.image
+            })
+                .then(function ({ data }) {
+                    // console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         createFruit(val) {
             console.log(val)
@@ -80,12 +116,11 @@ export default {
         },
         editProduct(product) {
             this.productName = product.name
-            this.producer = product.producer
+            this.producer = product.producer.id
             this.prix = product.prix
             this.fruits = product.fruits
             _.merge(this.fruitList, this.fruits)
             this.id = product.id
-
         }
 
 
@@ -95,3 +130,4 @@ export default {
         this.getProducer();
     },
 }
+

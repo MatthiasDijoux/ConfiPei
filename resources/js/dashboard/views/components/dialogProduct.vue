@@ -34,6 +34,7 @@
             <v-col cols="12" sm="6" md="4">
               <v-text-field color="teal" v-model="prix" label="prix*" required></v-text-field>
             </v-col>
+
             <v-col cols="12" sm="6" md="6">
               <v-autocomplete
                 v-model="fruits"
@@ -56,6 +57,9 @@
                   </v-btn>
                 </template>
               </v-autocomplete>
+              <v-col cols="12" sm="6" md="12">
+                <v-file-input  v-on:change="onFileChange"></v-file-input>
+              </v-col>
             </v-col>
           </v-row>
         </v-container>
@@ -64,7 +68,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="teal" text @click="dialog = false">Fermer</v-btn>
-        <v-btn color="teal" text @click="dialog = false, addDatas()">Enregistrer</v-btn>
+        <v-btn color="teal" text @click="dialog = false,addDatas(),uploadImage()">Enregistrer</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
