@@ -68,7 +68,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="teal" text @click="dialog = false">Fermer</v-btn>
-        <v-btn color="teal" text @click="dialog = false,addDatas(),uploadImage()">Enregistrer</v-btn>
+        <v-btn color="teal" text @click="dialog = false,addDatas()">Enregistrer</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

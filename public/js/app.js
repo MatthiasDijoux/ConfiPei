@@ -2031,6 +2031,9 @@ __webpack_require__.r(__webpack_exports__);
         text: "Prix",
         value: "prix"
       }, {
+        text: "Image",
+        value: "image"
+      }, {
         text: "Actions",
         value: "actions"
       }],
@@ -2140,6 +2143,7 @@ __webpack_require__.r(__webpack_exports__);
         id_producer: this.producer,
         prix: this.prix,
         fruits: this.fruits,
+        image: this.image,
         id: this.id
       }).then(function (response) {
         if (response.status === 200) {
@@ -2165,17 +2169,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     uploadImage: function uploadImage() {
       console.log('upload');
-      var url = "";
-
-      if (!this.product.id) {
-        url = '/api/uploadImage/';
-      } else {
-        url = '/api/uploadImage/' + this.product.id;
-      }
-
-      console.log(url);
-      axios.post(url, {
-        image: this.image
+      console.log(this.product.id);
+      axios.post('/api/uploadImage/', {
+        image: this.image,
+        id: this.product.id
       }).then(function (_ref2) {// console.log(data);
 
         var data = _ref2.data;
@@ -26261,7 +26258,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("v-data-table", {
     staticClass: "elevation-1",
-    attrs: { headers: _vm.headers, items: _vm.products, "items-per-page": 10 },
+    attrs: { headers: _vm.headers, items: _vm.products, "items-per-page": 5 },
     scopedSlots: _vm._u([
       {
         key: "top",
@@ -26313,6 +26310,15 @@ var render = function() {
         fn: function(ref) {
           var item = ref.item
           return [_vm._v(_vm._s(item.prix))]
+        }
+      },
+      {
+        key: "item.image",
+        fn: function(ref) {
+          var item = ref.item
+          return [
+            _c("v-img", { attrs: { src: item.image, "aspect-ratio": "1.7" } })
+          ]
         }
       },
       {
@@ -26638,7 +26644,7 @@ var render = function() {
                   attrs: { color: "teal", text: "" },
                   on: {
                     click: function($event) {
-                      ;(_vm.dialog = false), _vm.addDatas(), _vm.uploadImage()
+                      ;(_vm.dialog = false), _vm.addDatas()
                     }
                   }
                 },

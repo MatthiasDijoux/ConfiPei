@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class imageController extends Controller
 {
-    function imageUpload(Request $request, $id)
+    function imageUpload(Request $request)
     {
         $img = $request->get('image');
         $exploded = explode(",", $img);
@@ -25,7 +25,12 @@ class imageController extends Controller
         $path =  storage_path('\images\\') . $filename;
 
         if (file_put_contents($path, $decode)) {
-            $dataPhoto = ProductModel::find($id);
+            $id = $request->get('id');
+            if (!$id) {
+                $dataPhoto = new ProductModel;
+            } else {
+                $dataPhoto = ProductModel::find($id);
+            }
             $dataPhoto->image = storage_path('\images\\') . $filename;
             $dataPhoto->save();
             return $dataPhoto;

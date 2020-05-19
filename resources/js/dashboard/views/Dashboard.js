@@ -15,6 +15,7 @@ export default {
             { text: "Producteurs", value: "producteur" },
             { text: "Fruits", value: "fruits" },
             { text: "Prix", value: "prix" },
+            { text: "Image", value: "image" },
             { text: "Actions", value: "actions" },
         ],
         editItem:{

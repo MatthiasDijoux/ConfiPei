@@ -58,6 +58,7 @@ export default {
                 id_producer: this.producer,
                 prix: this.prix,
                 fruits: this.fruits,
+                image: this.image,
                 id: this.id
             })
                 .then(response => {
@@ -85,16 +86,10 @@ export default {
 
         uploadImage() {
             console.log('upload')
-            let url = ""
-            if (!this.product.id) {
-                url = '/api/uploadImage/'
-            }
-            else {
-                url = '/api/uploadImage/' + this.product.id
-            }
-            console.log(url)
-            axios.post(url, {
-                image: this.image
+            console.log(this.product.id);
+            axios.post('/api/uploadImage/', {
+                image: this.image,
+                id:this.product.id
             })
                 .then(function ({ data }) {
                     // console.log(data);

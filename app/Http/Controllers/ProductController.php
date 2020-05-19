@@ -10,6 +10,8 @@ use App\ProductModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class ProductController extends Controller
 {
@@ -60,7 +62,7 @@ class ProductController extends Controller
         $addToDb->prix = $datasToAdd['prix'];
         if ($product && isset($product->producers) && $datasToAdd['id_producer'] != $product->producers->id) {
         } else {
-            
+
             $producer = ProducerModel::find($datasToAdd['id_producer']);
             if (!$producer) {
                 return 'err';
@@ -99,6 +101,26 @@ class ProductController extends Controller
         if (!empty($attachArray)) {
             $product->fruits()->attach($attachArray);
         }
+
+        $img = $request->get('image');
+        $exploded = explode(",", $img);
+
+        if (str::contains($exploded[0], 'gif')) {
+            $ext = 'gif';
+        } else if (str::contains($exploded[0], 'png')) {
+            $ext = 'png';
+        } else {
+            $ext = 'jpg';
+        }
+        $decode = base64_decode($exploded[1]);
+        $filename = str::random() . "." . $ext;
+        $path =  storage_path('\images\\') . $filename;
+
+        if (file_put_contents($path, $decode)) {
+            $addToDb->image = storage_path('\images\\') . $filename;
+            $addToDb->save();
+        }
+
         return new ProductResource($product);
     }
 }
