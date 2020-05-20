@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 import Home from './views/Home.vue';
 import Dashboard from './views/Dashboard.vue';
 import Login from './Login.vue';
+import Product from './views/Product.vue';
+import producerProfile from './views/producerProfile.vue';
 import { Role } from './_helpers/role';
 import { authenticationService } from '../dashboard/_services/authentication.service'
 Vue.use(VueRouter);
@@ -14,6 +16,17 @@ const router = new VueRouter({
             path: '/',
             name: 'home',
             component: Home,
+        },
+        {
+            path: '/confitures',
+            name: 'confitures',
+            component: Product,
+        },
+        {
+            path: '/producteur',
+            name: 'producteur',
+            component: producerProfile,
+            meta: { authorize: [Role.Producteur] }
         },
         {
             path: '/login',

@@ -11,6 +11,8 @@ $factory->define(ProductModel::class, function (Faker $faker) {
 
     return [
         "name" => $faker->firstname,
-        "id_producer" => factory(ProducerModel::class)
+        "id_producer" => factory(ProducerModel::class),
+        "image" => "uv1EkQOFDRSGAZOt.jpg",
+        "prix" => rand(10, 100)
     ];
 });

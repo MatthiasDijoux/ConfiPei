@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\ProductModel;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response; 
 
 class imageController extends Controller
 {
-    function imageUpload(Request $request)
+    function index($filename)
     {
-        $img = $request->get('image');
-        $exploded = explode(",", $img);
+        function getImageContentType($file)
+        {
+            $mime = exif_imagetype($file);
 
-        if (str::contains($exploded[0], 'gif')) {
-            $ext = 'gif';
-        } else if (str::contains($exploded[0], 'png')) {
-            $ext = 'png';
-        } else {
-            $ext = 'jpg';
-        }
-        $decode = base64_decode($exploded[1]);
-        $filename = str::random() . "." . $ext;
-        $path =  storage_path('\images\\') . $filename;
+            if ($mime === IMAGETYPE_JPEG)
+                $contentType = 'image/jpeg';
 
-        if (file_put_contents($path, $decode)) {
-            $id = $request->get('id');
-            if (!$id) {
-                $dataPhoto = new ProductModel;
-            } else {
-                $dataPhoto = ProductModel::find($id);
-            }
-            $dataPhoto->image = storage_path('\images\\') . $filename;
-            $dataPhoto->save();
-            return $dataPhoto;
+            elseif ($mime === IMAGETYPE_GIF)
+                $contentType = 'image/gif';
+
+            else if ($mime === IMAGETYPE_PNG)
+                $contentType = 'image/png';
+
+            else
+                $contentType = false;
+
+            return $contentType;
         }
+        $filePath = storage_path() . '/images/' . $filename;
+        if (!File::exists($filePath) or (!$mimeType = getImageContentType($filePath))) {
+            return Response::make("File does not exist.", 404);
+        }
+        $fileContents = File::get($filePath);
+
+        return Response::make($fileContents, 200, array('Content-Type' => $mimeType));
     }
 }

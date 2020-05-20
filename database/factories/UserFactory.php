@@ -22,6 +22,6 @@ $factory->define(User::class, function (Faker $faker) {
         'username' => $faker->name,
         'mail' => $faker->unique()->safeEmail,
         'password' => bcrypt('admin'), // password
-        'id_role' => 2
+        'id_role' => rand(1,3)
     ];
 });

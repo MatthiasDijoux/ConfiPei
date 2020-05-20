@@ -22,6 +22,10 @@ class RoleSeeder extends Seeder
                 "id" => 2,
                 "name" => "Client",
             ],
+            [
+                "id" => 3,
+                "name" => "Producteur",
+            ],
         ];
 
         DB::table('role')->insert(

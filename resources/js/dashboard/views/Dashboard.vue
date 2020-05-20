@@ -11,11 +11,11 @@
     <template v-slot:item.producteur="{ item }">{{item.producer.name}}</template>
     <template v-slot:item.fruits="{ item }">{{displayFruits(item.fruits)}}</template>
     <template v-slot:item.prix="{ item }">{{item.prix}}</template>
-    <template v-slot:item.image="{ item }">
-      <v-img :src="item.image" aspect-ratio="1.7"></v-img>
-    </template>
     <template v-slot:item.actions="{ item }">
       <dialogProduct :product="item" :isModification="true" />
+    </template>
+    <template v-slot:item.image="{ item }">
+      <v-img :src="'/storage/images/'+item.image" aspect-ratio="1.9"></v-img>
     </template>
   </v-data-table>
 </template>

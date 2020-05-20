@@ -58,7 +58,7 @@
                 </template>
               </v-autocomplete>
               <v-col cols="12" sm="6" md="12">
-                <v-file-input  v-on:change="onFileChange"></v-file-input>
+                <v-file-input  v-on:change="onFileChange" ></v-file-input>
               </v-col>
             </v-col>
           </v-row>

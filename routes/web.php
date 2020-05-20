@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/')->group(function(){
+Route::get('/storage/images/{filename}', 'imageController@index');
+
+Route::prefix('/')->group(function () {
     Route::get('/', 'ProductController@index');
-    Route::get('/{any}', 'ProductController@index')->where('any','.*');
+    Route::get('/{any}', 'ProductController@index')->where('any', '.*');
 });
