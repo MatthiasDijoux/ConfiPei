@@ -1,4 +1,4 @@
-import {authenticationService} from "../_services/authentication.service"
+import { authenticationService } from "../_services/authentication.service"
 import Axios from "axios"
 export default {
     data: () => ({
@@ -6,10 +6,10 @@ export default {
     }),
     methods: {
         displayProfile() {
-            console.log(authenticationService.currentUserValue.id)
-            Axios.post('/api/producer', {
-                id:''
-            })
+            Axios.get('/api/producer/' + authenticationService.currentUserValue.id)
+                .then((data => {
+                    this.producer = (data.data.data)
+                }))
         }
     },
     created() {

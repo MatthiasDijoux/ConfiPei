@@ -84,20 +84,7 @@ export default {
             reader.readAsDataURL(file);
         },
 
-        uploadImage() {
-            console.log('upload')
-            console.log(this.product.id);
-            axios.post('/api/uploadImage/', {
-                image: this.image,
-                id:this.product.id
-            })
-                .then(function ({ data }) {
-                    // console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
+
         createFruit(val) {
             console.log(val)
         },

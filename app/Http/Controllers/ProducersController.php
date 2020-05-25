@@ -2,22 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProducerResource;
-use App\ProducerModel;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-
+use App\Http\Resources\UsersResource;
+use App\User;
 class ProducersController extends Controller
 {
-    public function index(Request $request)
+    public function index($id)
     {
-        $data = Validator::make(
-            $request->input(),
-            [
-                'id' => 'required'
-            ]
-        )->validate();
-        $producer = ProducerModel::find($data['id']);
-        return $producer;
+        $user = User::find($id);
+        return new UsersResource($user);
     }
 }

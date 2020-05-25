@@ -58,9 +58,10 @@
                 </template>
               </v-autocomplete>
               <v-col cols="12" sm="6" md="12">
-                <v-file-input  v-on:change="onFileChange" ></v-file-input>
+                <v-file-input v-on:change="onFileChange"></v-file-input>
               </v-col>
             </v-col>
+            <v-img :src="'/storage/images/'+product.image" aspect-ratio="1.9"></v-img>
           </v-row>
         </v-container>
         <small>*Champ obligatoire</small>
