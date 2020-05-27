@@ -17,8 +17,7 @@ class UserModel extends Authenticatable
     {
         return $this->belongsToMany(UserModel::class, 'id_role');
     }
-    function users()
-    {
-        return $this->belongsToMany('App\UserModel', 'user_has_order', 'id_user', 'id_order');
+    function producer(){
+        return $this->hasMany(ProducerModel::class,'id_user');
     }
 }

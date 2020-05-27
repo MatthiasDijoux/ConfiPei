@@ -17,10 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::middleware(['auth:api', 'roles:Admin|Producteur'])->group(function () {
+    Route::get('producers', 'ProducersController@getProducers');
+});
+Route::middleware(['auth:api','roles:Producteur'])->prefix('producers')->group(function(){
+    Route::get('products', 'ProductController@getOfProducer');
+    Route::post('products', 'ProductController@createOrUpdate');
+});
 Route::get('products', 'ProductController@getProduct');
-Route::post('updateProduct', 'ProductController@createOrUpdate');
-Route::get('Fruits', 'FruitController@index');
+Route::get('fruits', 'FruitController@index');
+
 Route::post('/login', 'AuthController@login');
 Route::middleware('auth:api')->get('/logout', 'AuthController@logout');
-Route::get('producer/{id}', 'ProducersController@index');

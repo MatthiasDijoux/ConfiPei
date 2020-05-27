@@ -1,9 +1,7 @@
 import Axios from "axios";
-import uploadImage from "./uploadImage.vue";
+import { clientService } from '../../_services/clientService';
+import { authenticationService } from "../../_services/authentication.service";
 export default {
-    components: {
-        uploadImage,
-    },
     props: {
         product: {
             default: function () {
@@ -32,12 +30,13 @@ export default {
             loading: false,
             fruitList: [],
             search: null,
+            isProducer: authenticationService.isProducer(),
         }
     },
     watch: {
         search: function (val) {
             if (val && val.length > 2) {
-                Axios.get('/api/Fruits', { params: { query: val } })
+                clientService.get('/api/fruits', { query: val })
                     .then(({ data }) => {
                         this.loading = false
 
@@ -52,15 +51,21 @@ export default {
     methods: {
         //TODO Refaire les routes api //
         addDatas() {
-            //Le fruit doit avoir un name et un id, ou juste un name
-            Axios.post('../api/updateProduct', {
+            let datasToAdd = {
                 name: this.productName,
-                id_producer: this.producer,
                 prix: this.prix,
                 fruits: this.fruits,
                 image: this.image,
                 id: this.id
-            })
+            }
+            if (!this.isProducer) {
+                datasToAdd['id_producer'] = this.producer
+            }
+
+            let url = this.isProducer ? "/api/producers/products" : "/api/products"
+
+            //Le fruit doit avoir un name et un id, ou juste un name
+            clientService.post(url, datasToAdd)
                 .then(response => {
                     if (response.status === 200) {
                         console.log("Données enregistrée")
@@ -90,22 +95,25 @@ export default {
         },
 
         getProducer() {
-            Axios.get("/api/products").then(({ data }) =>
-                data.data.forEach(data => {
-                    this.producers.push(data.producer);
-                })
-            );
+
+            if (!this.isProducer) {
+                clientService.get("/api/producers").then(({ data }) =>
+                    data.data.forEach(data => {
+                        this.producers.push(data);
+                    })
+                );
+            }
         },
         editProduct(product) {
             this.productName = product.name
-            this.producer = product.producer.id
+            if (!this.isProducer) {
+                this.producer = product.producer.id
+            }
             this.prix = product.prix
             this.fruits = product.fruits
             _.merge(this.fruitList, this.fruits)
             this.id = product.id
         }
-
-
     },
 
     created() {

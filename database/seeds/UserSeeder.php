@@ -22,15 +22,13 @@ class UserSeeder extends Seeder
                 "mail" => "admin@test.com",
                 "password" => "admin",
                 "id_role" => "1"
-
-
             ]
         ];
 
         DB::table('users')->insert(
             $array
         );
-        factory(User::class, 3)->create();
+        factory(User::class, 4)->create();
     }
     
 }

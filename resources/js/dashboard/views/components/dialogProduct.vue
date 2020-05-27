@@ -22,7 +22,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="4" v-if="!isProducer">
               <v-select
                 :items="producers"
                 item-value="id"
@@ -57,11 +57,13 @@
                   </v-btn>
                 </template>
               </v-autocomplete>
-              <v-col cols="12" sm="6" md="12">
-                <v-file-input v-on:change="onFileChange"></v-file-input>
-              </v-col>
             </v-col>
-            <v-img :src="'/storage/images/'+product.image" aspect-ratio="1.9"></v-img>
+            <v-col cols="12" sm="6" md="1">
+              <v-file-input v-on:change="onFileChange"></v-file-input>
+            </v-col>
+            <v-col cols="12" sm="6" md="12">
+              <v-img :src="'/storage/images/'+product.image" aspect-ratio="1.9"></v-img>
+            </v-col>
           </v-row>
         </v-container>
         <small>*Champ obligatoire</small>

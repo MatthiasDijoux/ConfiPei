@@ -7,6 +7,7 @@ use App\Http\Resources\addProductResource;
 use App\Http\Resources\ProductResource;
 use App\ProducerModel;
 use App\ProductModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -41,10 +42,9 @@ class ProductController extends Controller
             [
                 "name" => "required",
                 "prix" => "required",
-                "id_producer" => "required|numeric",
+                "id_producer" => "numeric",
                 "fruits" => "",
                 "id" => "",
-                "oldFruit" => "",
             ],
             [
                 'required' => 'Le champ :attribute est requis'
@@ -58,23 +58,31 @@ class ProductController extends Controller
             $addToDb = $product;
             Log::debug('UpdateProduct');
         }
-
-
-
         $addToDb->name = $datasToAdd['name'];
         $addToDb->prix = $datasToAdd['prix'];
-        if ($product && isset($product->producers) && $datasToAdd['id_producer'] != $product->producers->id) {
+        if (isset($datasToAdd['id_producer'])) {
+            if ($product && isset($product->producers) && $datasToAdd['id_producer'] != $product->producers->id) {
+            } else {
+
+                $producer = ProducerModel::find($datasToAdd['id_producer']);
+                if (!$producer) {
+                    return 'err';
+                }
+                $addToDb->producers()->associate($producer);
+            }
         } else {
 
-            $producer = ProducerModel::find($datasToAdd['id_producer']);
-            if (!$producer) {
-                return 'err';
+            if (!isset($datasToAdd['id'])) {
+                $user = $request->user();
+                $producer = ProducerModel::where('id_user', '=', $user->id)->first();
+                if (!$producer) {
+                    return 'err';
+                }
+                $addToDb->producers()->associate($producer);
             }
-            $addToDb->producers()->associate($producer);
         }
 
         $addToDb->save();
-
         $confiFruits = [];
         $clientFruits = [];
         $detachArray = [];
@@ -99,10 +107,11 @@ class ProductController extends Controller
             }
         }
         if (!empty($detachArray)) {
-            $product->fruits()->detach($detachArray);
+            $addToDb->fruits()->detach($detachArray);
         }
+
         if (!empty($attachArray)) {
-            $product->fruits()->attach($attachArray);
+            $addToDb->fruits()->attach($attachArray);
         }
 
         $img = $request->get('image');
@@ -125,4 +134,12 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
+    public function getOfProducer(Request $request)
+    {
+        $user = $request->user();
+        $products = ProductModel::with(['fruits'])->whereHas('producers', function (Builder $query) use ($user) {
+            $query->where('id_user', '=', $user->id);
+        })->get();
+        return ProductResource::collection($products);
+    }
 }

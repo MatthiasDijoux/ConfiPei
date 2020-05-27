@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { clientService } from "../_services/clientService";
 export default {
     data: () => ({
         products: [],
@@ -11,7 +12,7 @@ export default {
     watch: {
         search: function (val) {
             if (val && val.length > 2) {
-                Axios.get('/api/Fruits', { params: { query: val } })
+                clientService.get('/api/fruits',  {query: val } )
                     .then(({ data }) => {
                         this.loading = false
 
@@ -25,7 +26,7 @@ export default {
 
     methods: {
         displayProduct() {
-            Axios.get("/api/products")
+            clientService.get("/api/products")
                 .then(({ data }) =>
                     data.data.forEach(produit => {
                         this.products.push(produit)

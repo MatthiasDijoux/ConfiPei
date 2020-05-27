@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(ProducerModel::class, function (Faker $faker) {
     return [
-        "name" => $faker->firstname
+        "name" => $faker->firstname,
+        "id_user"=>rand(1,5)
     ];
 });

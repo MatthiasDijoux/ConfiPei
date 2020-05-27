@@ -12,9 +12,7 @@ class Relation extends Migration
             $table->unsignedBigInteger('id_producer');
             $table->foreign('id_producer')->references('id')->on('producer');
         });
-
-       
-
+      
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('id_role');
             $table->foreign('id_role')->references('id')->on('role');
@@ -47,6 +45,10 @@ class Relation extends Migration
             $table->unsignedBigInteger('id_order');
             $table->foreign('id_order')->references('id')->on('order');
         });
+        Schema::table('producer', function (Blueprint $table){
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
+        });
     }
 
     /**
@@ -62,7 +64,11 @@ class Relation extends Migration
             $table->dropForeign(['id_producer']);
             $table->dropIfExists('id_producer');
         });
-
+        Schema::table('producer', function (Blueprint $table) {
+            Schema::disableForeignKeyConstraints();
+            $table->dropForeign(['id_user']);
+            $table->dropIfExists('id_user');
+        });
 
         Schema::table('users', function (Blueprint $table) {
             Schema::disableForeignKeyConstraints();

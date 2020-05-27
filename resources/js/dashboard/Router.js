@@ -23,7 +23,7 @@ const router = new VueRouter({
             component: Product,
         },
         {
-            path: '/producteur',
+            path: '/dashboardProducteur',
             name: 'producteur',
             component: producerProfile,
             meta: { authorize: [Role.Producteur] }

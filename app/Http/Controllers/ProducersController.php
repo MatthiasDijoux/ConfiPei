@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProducerResource;
 use App\Http\Resources\UsersResource;
+use App\ProducerModel;
 use App\User;
+
 class ProducersController extends Controller
 {
-    public function index($id)
+    public function getProducers()
     {
-        $user = User::find($id);
-        return new UsersResource($user);
+        $producers = ProducerModel::get();
+        return ProducerResource::collection($producers);      
     }
 }

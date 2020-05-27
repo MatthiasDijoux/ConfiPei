@@ -8,12 +8,15 @@ class ProducerModel extends Model
 {
     protected $table = "producer";
     protected $fillable = [
-        'name'
+        'name','id_user'
     ];
     public $timestamps = false;
 
     function products()
     {
         return $this->hasMany(ProductModel::class, 'id_producer');
+    }
+    function user(){
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

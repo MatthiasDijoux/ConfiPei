@@ -15,17 +15,16 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         //un seul producer donc New
-        $producer =  new ProducerResource($this->producers);
+        $producer =  new ProducerResource($this->whenLoaded('producers'));
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'producer' => $producer,
             'rewards' => RewardResource::collection($this->whenLoaded('rewards')),
-            /*             'fruits'=>FruitResource::collection($this->whenLoaded('fruits')),
- */            'fruits' => $this->fruits,
+            'fruits' => FruitResource::collection($this->whenLoaded('fruits')),
             'prix' => $this->prix,
-            'image'=>$this->image,
+            'image' => $this->image,
         ];
     }
 }

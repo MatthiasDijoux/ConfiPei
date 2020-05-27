@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProducerResource extends JsonResource
@@ -14,9 +15,13 @@ class ProducerResource extends JsonResource
      */
     public function toArray($request)
     {
+
+        $user = new UsersResource($this->user);
+
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-        ]    ;
+            'id' => $this->id,
+            'name' => $this->name,
+            'id_user' => $user,
+        ];
     }
 }

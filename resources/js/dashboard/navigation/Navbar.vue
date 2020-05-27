@@ -8,7 +8,7 @@
     <v-toolbar-items class="hidden-xs-only">
       <router-link to="/dashboard" tag="span" style="cursor: pointer">Dashboard</router-link>
       <v-spacer></v-spacer>
-      <router-link to="/producteur" tag="span" style="cursor: pointer">Profil Producteur</router-link>
+      <router-link to="/dashboardProducteur" tag="span" style="cursor: pointer">Profil Producteur</router-link>
       <v-spacer></v-spacer>
       <router-link to="/" tag="span" style="cursor: pointer">Home</router-link>
       <v-spacer></v-spacer>

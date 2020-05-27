@@ -1,5 +1,6 @@
 import Axios from "axios";
 import dialogProduct from '../views/components/dialogProduct.vue';
+import {clientService} from '../_services/clientService';
 export default {
     components: {
         dialogProduct,
@@ -30,7 +31,7 @@ export default {
 
     methods: {
         initialize() {
-            Axios.get("/api/products").then(({ data }) =>
+            clientService.get("/api/products").then(({ data }) =>
                 data.data.forEach(data => {
                     this.products.push(data);
                 })
