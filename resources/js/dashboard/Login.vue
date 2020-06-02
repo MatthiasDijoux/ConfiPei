@@ -5,7 +5,7 @@
         <v-col cols="12" sm="8" md="4">
           <v-card class="elevation-12">
             <v-toolbar color="success" dark flat>
-              <v-toolbar-title>Indentifiez-vous</v-toolbar-title>
+              <v-toolbar-title>Identifiez-vous</v-toolbar-title>
               <v-spacer />
             </v-toolbar>
             <v-card-text>

@@ -20,12 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware(['auth:api', 'roles:Admin|Producteur'])->group(function () {
     Route::get('producers', 'ProducersController@getProducers');
 });
-Route::middleware(['auth:api','roles:Producteur'])->prefix('producers')->group(function(){
+Route::middleware(['auth:api', 'roles:Producteur'])->prefix('producers')->group(function () {
     Route::get('products', 'ProductController@getOfProducer');
     Route::post('products', 'ProductController@createOrUpdate');
 });
+Route::middleware('auth:api')->get('profil', 'UserController@index');
+
 Route::get('products', 'ProductController@getProduct');
 Route::get('fruits', 'FruitController@index');
-
 Route::post('/login', 'AuthController@login');
 Route::middleware('auth:api')->get('/logout', 'AuthController@logout');

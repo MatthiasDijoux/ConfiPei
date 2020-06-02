@@ -1,6 +1,9 @@
-import Axios from "axios";
 import { clientService } from "../_services/clientService";
+import addToBasket from "../views/components/addToBasket.vue";
 export default {
+    components:{
+        addToBasket,
+    },
     data: () => ({
         products: [],
         fruits: [],

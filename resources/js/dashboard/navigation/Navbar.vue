@@ -6,15 +6,30 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-xs-only">
-      <router-link to="/dashboard" tag="span" style="cursor: pointer">Dashboard</router-link>
-      <v-spacer></v-spacer>
-      <router-link to="/dashboardProducteur" tag="span" style="cursor: pointer">Profil Producteur</router-link>
-      <v-spacer></v-spacer>
-      <router-link to="/" tag="span" style="cursor: pointer">Home</router-link>
-      <v-spacer></v-spacer>
-      <router-link to="/confitures" tag="span" style="cursor: pointer">Confitures</router-link>
-      <v-spacer></v-spacer>
-      <v-btn href="/api/logout" @click.native.stop>deconnexion</v-btn>
+      <v-btn to="/">Home</v-btn>
+      <v-btn to="/dashboard">Dashboard</v-btn>
+      <v-btn to="/dashboardProducteur">Profil Producteur</v-btn>
+      <v-btn to="/confitures">Liste Confitures</v-btn>
+      <v-btn to="/Profil">Profil</v-btn>
+      <basket />
+
+      <v-btn @click="logout()">deconnexion</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
+<script>
+import { authenticationService } from "../_services/authentication.service";
+import router from "../Router";
+import basket from "../views/components/basket.vue";
+export default {
+  components: {
+    basket
+  },
+  methods: {
+    logout() {
+      authenticationService.logout();
+      router.push("/login");
+    }
+  }
+};
+</script>

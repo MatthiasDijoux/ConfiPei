@@ -7,6 +7,7 @@ import Product from './views/Product.vue';
 import producerProfile from './views/producerProfile.vue';
 import { Role } from './_helpers/role';
 import { authenticationService } from '../dashboard/_services/authentication.service'
+import Profil from './views/Profil.vue';
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -32,6 +33,13 @@ const router = new VueRouter({
             path: '/login',
             name: 'login',
             component: Login,
+            meta: { authorize: [] }
+
+        },
+        {
+            path: '/profil',
+            name: 'profil',
+            component: Profil,
             meta: { authorize: [] }
 
         },

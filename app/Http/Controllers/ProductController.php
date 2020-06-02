@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\FruitModel;
-use App\Http\Resources\addProductResource;
 use App\Http\Resources\ProductResource;
 use App\ProducerModel;
 use App\ProductModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;

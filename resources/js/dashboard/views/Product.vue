@@ -28,7 +28,11 @@
 
           <v-card-title>{{product.name}}</v-card-title>
 
-          <v-card-subtitle>Fruits: {{displayFruits(product.fruits)}}</v-card-subtitle>
+          <v-card-subtitle>
+            Fruits: {{displayFruits(product.fruits)}}
+            <v-spacer/>
+            <addToBasket :product="product"/>
+          </v-card-subtitle>
         </v-card>
       </v-col>
     </v-row>
