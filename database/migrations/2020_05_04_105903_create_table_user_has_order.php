@@ -14,7 +14,10 @@ class CreateTableUserHasOrder extends Migration
     public function up()
     {
         Schema::create('user_has_order', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->unsignedBigInteger('id_order');
+            $table->foreign('id_order')->references('id')->on('order');
             $table->timestamps();
         });
     }
@@ -26,7 +29,9 @@ class CreateTableUserHasOrder extends Migration
      */
     public function down()
     {
-       
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('user_has_order');
+        Schema::enableForeignKeyConstraints();
+
     }
 }

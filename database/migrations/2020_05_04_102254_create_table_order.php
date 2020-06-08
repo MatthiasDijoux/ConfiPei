@@ -15,6 +15,7 @@ class CreateTableOrder extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->timestamps();
         });
     }
 

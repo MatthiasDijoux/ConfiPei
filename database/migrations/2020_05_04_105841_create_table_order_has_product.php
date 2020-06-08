@@ -14,7 +14,10 @@ class CreateTableOrderHasProduct extends Migration
     public function up()
     {
         Schema::create('order_has_product', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_order');
+            $table->foreign('id_order')->references('id')->on('order');
+            $table->unsignedBigInteger('id_product');
+            $table->foreign('id_product')->references('id')->on('product');
             $table->integer('quantity')->nullable();
 
         });
@@ -27,7 +30,9 @@ class CreateTableOrderHasProduct extends Migration
      */
     public function down()
     {
-        
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('order_has_product');
+        Schema::enableForeignKeyConstraints();
+
     }
 }

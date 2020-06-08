@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableReward extends Migration
+class CorrectionManyToMany extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateTableReward extends Migration
      */
     public function up()
     {
-        Schema::create('reward', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            
+        Schema::table('many', function (Blueprint $table) {
+            //
         });
     }
 
@@ -27,6 +25,8 @@ class CreateTableReward extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reward');
+        Schema::table('many', function (Blueprint $table) {
+            //
+        });
     }
 }

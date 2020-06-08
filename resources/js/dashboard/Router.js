@@ -8,6 +8,8 @@ import producerProfile from './views/producerProfile.vue';
 import { Role } from './_helpers/role';
 import { authenticationService } from '../dashboard/_services/authentication.service'
 import Profil from './views/Profil.vue';
+import Basket from './views/basketOrder.vue';
+import Stepper from './views/components/Stepper.vue';
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -24,10 +26,21 @@ const router = new VueRouter({
             component: Product,
         },
         {
+            path: '/basket',
+            name: 'basket',
+            component: Basket,
+        },
+        {
             path: '/dashboardProducteur',
             name: 'producteur',
             component: producerProfile,
             meta: { authorize: [Role.Producteur] }
+        },
+        {
+            path: '/confirmation',
+            name: 'stepper',
+            component: Stepper,
+            meta: { authorize: [Role.Producteur,Role.Admin,Role.Client] }
         },
         {
             path: '/login',

@@ -14,7 +14,10 @@ class CreateTableProductHasReward extends Migration
     public function up()
     {
         Schema::create('product_has_reward', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_product');
+            $table->foreign('id_product')->references('id')->on('product');
+            $table->unsignedBigInteger('id_reward');
+            $table->foreign('id_reward')->references('id')->on('reward');
         });
     }
 
@@ -25,6 +28,9 @@ class CreateTableProductHasReward extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('product_has_reward');
+        Schema::enableForeignKeyConstraints();
+
     }
 }

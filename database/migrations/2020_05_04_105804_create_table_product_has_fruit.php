@@ -14,7 +14,10 @@ class CreateTableProductHasFruit extends Migration
     public function up()
     {
         Schema::create('product_has_fruit', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_product');
+            $table->foreign('id_product')->references('id')->on('product');
+            $table->unsignedBigInteger('id_fruit');
+            $table->foreign('id_fruit')->references('id')->on('fruit');
         });
     }
 
@@ -25,8 +28,10 @@ class CreateTableProductHasFruit extends Migration
      */
     public function down()
     {
-       
 
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('product_has_fruit');
+        Schema::enableForeignKeyConstraints();
+
     }
 }

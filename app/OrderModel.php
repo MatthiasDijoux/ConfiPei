@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class OrderModel extends Model
 {
     protected $table = "order";
-    public $timestamps = false;
-    
+    protected $fillable = [
+        'id_user'
+    ];
+
     function products()
     {
-        return $this->belongsToMany('App\ProductModel', 'order_has_product', 'id_order','id_product');
+        return $this->belongsToMany(ProductModel::class, 'order_has_product', 'id_order', 'id_product');
     }
-    function users()
+    function user()
     {
-        return $this->belongsToMany('App\User', 'user_has_order', 'id_user', 'id_order');
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

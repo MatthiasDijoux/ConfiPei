@@ -1,10 +1,12 @@
 import EventBus from '../eventBus';
+import {clientService} from './clientService.js';
 //Export des fonctions du BasketService
 export const basketService = {
     add,
     getBasket,
     basketSize,
     replaceQuantity,
+    sendOrder,
 }
 
 /**
@@ -34,15 +36,36 @@ function add(product, quantity) {
     storeBasket(basket)
 
 }
+/**
+ * Cette fonction nous set à remplacer la quantité du produit précédent 
+ * @param {*} product 
+ */
 function replaceQuantity(product) {
     let basket = getBasket()
     if (_.hasIn(basket, buildKey(product))) {
         basket[buildKey(product)] = product
+        if ((basket[buildKey(product)].quantity) == 0) {
+            _.unset(basket, buildKey(product))
+        }
     }
     else {
         throw 'Err'
     }
     storeBasket(basket)
+}
+
+function sendOrder() {
+    let basket = getBasket();
+    let ordersList = [];
+    for (let i in basket) {
+        let obj = {}
+        obj['id'] = basket[i].id
+        obj['quantity'] = basket[i].quantity
+        ordersList.push(obj)
+    }
+    return clientService.post('/api/order', {
+        order: ordersList,
+    })
 }
 
 /**
@@ -77,6 +100,7 @@ function getBasket() {
  */
 function storeBasket(basket) {
     localStorage.setItem("currentBasket", JSON.stringify(basket))
+    EventBus.$emit('basket', basket)
     emitProductsSize(basket)
 }
 

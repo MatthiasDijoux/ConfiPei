@@ -43,6 +43,13 @@ function login(user) {
             return data;
         });
 }
+function checkAuthentication() {
+    let currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) {
+        // not logged in so redirect to login page with the return url
+        return next({ path: "/login", query: { returnUrl: to.path } });
+    }
+}
 
 function logout() {
     // remove user from local storage to log user out

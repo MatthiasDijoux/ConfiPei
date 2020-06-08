@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -31,8 +32,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(RoleModel::class, 'id_role');
     }
-
-    function producer(){
-        return $this->hasMany(ProducerModel::class,'id_user');
+    function orders()
+    {
+        return $this->hasMany(OrderModel::class, 'id_user');
+    }
+    function producer()
+    {
+        return $this->hasMany(ProducerModel::class, 'id_user');
     }
 }
