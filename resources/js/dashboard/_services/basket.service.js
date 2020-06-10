@@ -1,5 +1,5 @@
 import EventBus from '../eventBus';
-import {clientService} from './clientService.js';
+import { clientService } from './clientService.js';
 //Export des fonctions du BasketService
 export const basketService = {
     add,
@@ -54,7 +54,7 @@ function replaceQuantity(product) {
     storeBasket(basket)
 }
 
-function sendOrder() {
+function sendOrder(order) {
     let basket = getBasket();
     let ordersList = [];
     for (let i in basket) {
@@ -64,7 +64,9 @@ function sendOrder() {
         ordersList.push(obj)
     }
     return clientService.post('/api/order', {
-        order: ordersList,
+        order: order.orderList,
+        adresseLivraison: order.adresseLivraison,
+        adresseFacturation: order.adresseFacturation
     })
 }
 

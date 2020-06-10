@@ -40,4 +40,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProducerModel::class, 'id_user');
     }
+    function adresses()
+    {
+        return $this->hasMany(AdresseModel::class, 'id_adresse');
+    }
 }

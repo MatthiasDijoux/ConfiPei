@@ -2295,13 +2295,30 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       e1: 1,
-      orderList: [],
-      nom: '',
-      prenom: '',
-      ville: '',
-      codePostal: '',
-      pays: '',
-      adresse: '',
+      valid: true,
+      order: {
+        orderList: {},
+        adresseLivraison: {
+          nom: '',
+          prenom: '',
+          ville: '',
+          codePostal: '',
+          pays: '',
+          adresse: ''
+        },
+        adresseFacturation: {
+          nom: '',
+          prenom: '',
+          ville: '',
+          codePostal: '',
+          pays: '',
+          adresse: ''
+        }
+      },
+      rules: [function (value) {
+        return !!value || 'Required.';
+      }],
+      selectable: false,
       hidden: true,
       checkbox: false
     };
@@ -2311,21 +2328,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getOrder: function getOrder() {
-      this.orderList = _services_basket_service__WEBPACK_IMPORTED_MODULE_0__["basketService"].getBasket();
+      this.order.orderList = _services_basket_service__WEBPACK_IMPORTED_MODULE_0__["basketService"].getBasket();
     },
-    displayInputs: function displayInputs() {
-      if (this.checkbox === true) {
-        this.hidden = false;
-      } else {
-        this.hidden = true;
+    sendOrder: function sendOrder() {
+      if (this.checkbox === false) {
+        _.assign(this.order.adresseFacturation, this.order.adresseLivraison);
       }
+    },
+    process: function process() {
+      _services_basket_service__WEBPACK_IMPORTED_MODULE_0__["basketService"].sendOrder(this.order).then(function (response) {
+        console.log(response);
+      });
     }
   }
 });
-/* basketService.sendOrder().then(response => {
-                  console.log(response)
-              }) */
-//Valider commande, adresse et validation adresse de facturation, paiement
 
 /***/ }),
 
@@ -26595,7 +26611,7 @@ var render = function() {
     "v-footer",
     {
       staticClass: "font-weight-medium",
-      attrs: { color: "teal lighten-2", absolute: "", dark: "" }
+      attrs: { color: "teal lighten-2", dark: "" }
     },
     [
       _c("v-col", { staticClass: "text-center", attrs: { cols: "12" } }, [
@@ -27016,322 +27032,590 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-stepper",
-    {
-      model: {
-        value: _vm.e1,
-        callback: function($$v) {
-          _vm.e1 = $$v
-        },
-        expression: "e1"
-      }
-    },
+    "v-container",
     [
       _c(
-        "v-stepper-header",
-        [
-          _c("v-stepper-step", { attrs: { complete: _vm.e1 > 1, step: "1" } }, [
-            _vm._v("Confirmation de la commande")
-          ]),
-          _vm._v(" "),
-          _c("v-divider"),
-          _vm._v(" "),
-          _c("v-stepper-step", { attrs: { complete: _vm.e1 > 2, step: "2" } }, [
-            _vm._v("Adresse de livraison")
-          ]),
-          _vm._v(" "),
-          _c("v-divider"),
-          _vm._v(" "),
-          _c("v-stepper-step", { attrs: { step: "3" } }, [_vm._v("Paiement")])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-stepper-items",
+        "v-stepper",
+        {
+          model: {
+            value: _vm.e1,
+            callback: function($$v) {
+              _vm.e1 = $$v
+            },
+            expression: "e1"
+          }
+        },
         [
           _c(
-            "v-stepper-content",
-            { attrs: { step: "1" } },
+            "v-stepper-header",
             [
-              _vm._l(_vm.orderList, function(product, i) {
-                return _c(
-                  "v-row",
-                  { key: i, attrs: { dense: "", cols: "12" } },
-                  [
-                    _c(
-                      "v-col",
-                      [
-                        _c("v-card", [
-                          _c(
-                            "div",
-                            { staticClass: "d-flex justify-space-between" },
-                            [
-                              _c(
-                                "div",
-                                [
-                                  _c("v-card-title", {
-                                    staticClass: "headline",
-                                    domProps: {
-                                      textContent: _vm._s(product.name)
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-card-subtitle", {
-                                    domProps: {
-                                      textContent: _vm._s(
-                                        "Prix:" + product.price
-                                      )
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-card-subtitle", {
-                                    domProps: {
-                                      textContent: _vm._s(
-                                        "Nombre de produit:" + product.quantity
-                                      )
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-card-subtitle", {
-                                    domProps: {
-                                      textContent: _vm._s(
-                                        "Total:" +
-                                          product.price * product.quantity
-                                      )
-                                    }
-                                  })
-                                ],
-                                1
-                              )
-                            ]
-                          )
-                        ])
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              }),
-              _vm._v(" "),
               _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary" },
-                  on: {
-                    click: function($event) {
-                      _vm.e1 = 2
-                    }
-                  }
-                },
-                [_vm._v("Valider")]
+                "v-stepper-step",
+                { attrs: { complete: _vm.e1 > 1, step: "1" } },
+                [_vm._v("Confirmation de la commande")]
               ),
               _vm._v(" "),
-              _c("v-btn", { attrs: { to: "/basket", text: "" } }, [
-                _vm._v("Annuler")
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-stepper-step",
+                { attrs: { complete: _vm.e1 > 2, step: "2" } },
+                [_vm._v("Adresse de livraison")]
+              ),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c("v-stepper-step", { attrs: { step: "3" } }, [
+                _vm._v("Paiement")
               ])
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "v-stepper-content",
-            { attrs: { step: "2" } },
-            [
-              _c("span", [_vm._v("Adresse de facturation")]),
-              _vm._v(" "),
-              _c("v-text-field", {
-                attrs: { label: "Nom" },
-                model: {
-                  value: _vm.nom,
-                  callback: function($$v) {
-                    _vm.nom = $$v
-                  },
-                  expression: "nom"
-                }
-              }),
-              _vm._v(" "),
-              _c("v-text-field", {
-                attrs: { label: "Prenom" },
-                model: {
-                  value: _vm.prenom,
-                  callback: function($$v) {
-                    _vm.prenom = $$v
-                  },
-                  expression: "prenom"
-                }
-              }),
-              _vm._v(" "),
-              _c("v-text-field", {
-                attrs: { label: "Pays*" },
-                model: {
-                  value: _vm.pays,
-                  callback: function($$v) {
-                    _vm.pays = $$v
-                  },
-                  expression: "pays"
-                }
-              }),
-              _vm._v(" "),
-              _c("v-text-field", {
-                attrs: { label: "Ville*" },
-                model: {
-                  value: _vm.ville,
-                  callback: function($$v) {
-                    _vm.ville = $$v
-                  },
-                  expression: "ville"
-                }
-              }),
-              _vm._v(" "),
-              _c("v-text-field", {
-                attrs: { label: "Adresse*" },
-                model: {
-                  value: _vm.adresse,
-                  callback: function($$v) {
-                    _vm.adresse = $$v
-                  },
-                  expression: "adresse"
-                }
-              }),
-              _vm._v(" "),
-              _c("v-text-field", {
-                attrs: { label: "Code Postal*" },
-                model: {
-                  value: _vm.codePostal,
-                  callback: function($$v) {
-                    _vm.codePostal = $$v
-                  },
-                  expression: "codePostal"
-                }
-              }),
-              _vm._v(" "),
-              _c("v-checkbox", {
-                attrs: { label: "Oui" },
-                on: {
-                  change: function($event) {
-                    return _vm.displayInputs()
-                  }
-                },
-                model: {
-                  value: _vm.checkbox,
-                  callback: function($$v) {
-                    _vm.checkbox = $$v
-                  },
-                  expression: "checkbox"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                { attrs: { hidden: _vm.hidden } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "Nom" },
-                    model: {
-                      value: _vm.nom,
-                      callback: function($$v) {
-                        _vm.nom = $$v
-                      },
-                      expression: "nom"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Prenom" },
-                    model: {
-                      value: _vm.prenom,
-                      callback: function($$v) {
-                        _vm.prenom = $$v
-                      },
-                      expression: "prenom"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Pays*" },
-                    model: {
-                      value: _vm.pays,
-                      callback: function($$v) {
-                        _vm.pays = $$v
-                      },
-                      expression: "pays"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Ville*" },
-                    model: {
-                      value: _vm.ville,
-                      callback: function($$v) {
-                        _vm.ville = $$v
-                      },
-                      expression: "ville"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Adresse*" },
-                    model: {
-                      value: _vm.adresse,
-                      callback: function($$v) {
-                        _vm.adresse = $$v
-                      },
-                      expression: "adresse"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "Code Postal*" },
-                    model: {
-                      value: _vm.codePostal,
-                      callback: function($$v) {
-                        _vm.codePostal = $$v
-                      },
-                      expression: "codePostal"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary" },
-                  on: {
-                    click: function($event) {
-                      _vm.e1 = 3
-                    }
-                  }
-                },
-                [_vm._v("Valider")]
-              ),
-              _vm._v(" "),
-              _c("v-btn", { attrs: { text: "" } }, [_vm._v("Cancel")])
             ],
             1
           ),
           _vm._v(" "),
           _c(
-            "v-stepper-content",
-            { attrs: { step: "3" } },
+            "v-stepper-items",
             [
               _c(
-                "v-btn",
-                {
-                  attrs: { color: "primary" },
-                  on: {
-                    click: function($event) {
-                      _vm.e1 = 1
-                    }
-                  }
-                },
-                [_vm._v("Continue")]
+                "v-stepper-content",
+                { attrs: { step: "1" } },
+                [
+                  _vm._l(_vm.order.orderList, function(product, i) {
+                    return _c(
+                      "v-row",
+                      { key: i, attrs: { dense: "", cols: "12" } },
+                      [
+                        _c(
+                          "v-col",
+                          [
+                            _c("v-card", [
+                              _c(
+                                "div",
+                                { staticClass: "d-flex justify-space-between" },
+                                [
+                                  _c(
+                                    "div",
+                                    [
+                                      _c("v-card-title", {
+                                        staticClass: "headline",
+                                        domProps: {
+                                          textContent: _vm._s(product.name)
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-card-subtitle", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            "Prix:" + product.price
+                                          )
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-card-subtitle", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            "Nombre de produit:" +
+                                              product.quantity
+                                          )
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-card-subtitle", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            "Total:" +
+                                              product.price * product.quantity
+                                          )
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "primary" },
+                      on: {
+                        click: function($event) {
+                          _vm.e1 = 2
+                        }
+                      }
+                    },
+                    [_vm._v("Valider")]
+                  ),
+                  _vm._v(" "),
+                  _c("v-btn", { attrs: { to: "/basket", text: "" } }, [
+                    _vm._v("Annuler")
+                  ])
+                ],
+                2
               ),
               _vm._v(" "),
-              _c("v-btn", { attrs: { text: "" } }, [_vm._v("Cancel")])
+              _c(
+                "v-stepper-content",
+                { staticClass: "text-center", attrs: { step: "2" } },
+                [
+                  _c("span", [_vm._v("Adresse de livraison")]),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { col: "2", md: "4" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Nom*", rules: _vm.rules },
+                            model: {
+                              value: _vm.order.adresseLivraison.nom,
+                              callback: function($$v) {
+                                _vm.$set(_vm.order.adresseLivraison, "nom", $$v)
+                              },
+                              expression: "order.adresseLivraison.nom"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { col: "2", md: "4" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Prenom*", rules: _vm.rules },
+                            model: {
+                              value: _vm.order.adresseLivraison.prenom,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.order.adresseLivraison,
+                                  "prenom",
+                                  $$v
+                                )
+                              },
+                              expression: "order.adresseLivraison.prenom"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { col: "2", md: "4" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Pays*", rules: _vm.rules },
+                            model: {
+                              value: _vm.order.adresseLivraison.pays,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.order.adresseLivraison,
+                                  "pays",
+                                  $$v
+                                )
+                              },
+                              expression: "order.adresseLivraison.pays"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { col: "2", md: "4" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Ville*", rules: _vm.rules },
+                            model: {
+                              value: _vm.order.adresseLivraison.ville,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.order.adresseLivraison,
+                                  "ville",
+                                  $$v
+                                )
+                              },
+                              expression: "order.adresseLivraison.ville"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { col: "2", md: "4" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Adresse*", rules: _vm.rules },
+                            model: {
+                              value: _vm.order.adresseLivraison.adresse,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.order.adresseLivraison,
+                                  "adresse",
+                                  $$v
+                                )
+                              },
+                              expression: "order.adresseLivraison.adresse"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { col: "2", md: "4" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Code Postal*", rules: _vm.rules },
+                            model: {
+                              value: _vm.order.adresseLivraison.codePostal,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.order.adresseLivraison,
+                                  "codePostal",
+                                  $$v
+                                )
+                              },
+                              expression: "order.adresseLivraison.codePostal"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-switch", {
+                    attrs: { label: "Changer adresse de facturation" },
+                    model: {
+                      value: _vm.selectable,
+                      callback: function($$v) {
+                        _vm.selectable = $$v
+                      },
+                      expression: "selectable"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.selectable
+                    ? _c(
+                        "div",
+                        [
+                          _c("v-divider"),
+                          _vm._v(" "),
+                          _c("span", [_vm._v("Adresse de facturation")]),
+                          _vm._v(" "),
+                          _c(
+                            "v-row",
+                            [
+                              _c(
+                                "v-col",
+                                { attrs: { col: "2", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Nom*", rules: _vm.rules },
+                                    model: {
+                                      value: _vm.order.adresseFacturation.nom,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.order.adresseFacturation,
+                                          "nom",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "order.adresseFacturation.nom"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { col: "2", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Prenom*",
+                                      rules: _vm.rules
+                                    },
+                                    model: {
+                                      value:
+                                        _vm.order.adresseFacturation.prenom,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.order.adresseFacturation,
+                                          "prenom",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "order.adresseFacturation.prenom"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { col: "2", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Pays*", rules: _vm.rules },
+                                    model: {
+                                      value: _vm.order.adresseFacturation.pays,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.order.adresseFacturation,
+                                          "pays",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "order.adresseFacturation.pays"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { col: "2", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Ville*",
+                                      rules: _vm.rules
+                                    },
+                                    model: {
+                                      value: _vm.order.adresseFacturation.ville,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.order.adresseFacturation,
+                                          "ville",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "order.adresseFacturation.ville"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { col: "2", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Adresse*",
+                                      rules: _vm.rules
+                                    },
+                                    model: {
+                                      value:
+                                        _vm.order.adresseFacturation.adresse,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.order.adresseFacturation,
+                                          "adresse",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "order.adresseFacturation.adresse"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { col: "2", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Code Postal*",
+                                      rules: _vm.rules
+                                    },
+                                    model: {
+                                      value:
+                                        _vm.order.adresseFacturation.codePostal,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.order.adresseFacturation,
+                                          "codePostal",
+                                          $$v
+                                        )
+                                      },
+                                      expression:
+                                        "order.adresseFacturation.codePostal"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "primary", disabled: !_vm.valid },
+                      on: {
+                        click: function($event) {
+                          ;(_vm.e1 = 3), _vm.sendOrder()
+                        }
+                      }
+                    },
+                    [_vm._v("Valider")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.e1 = 1
+                        }
+                      }
+                    },
+                    [_vm._v("Retour")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-stepper-content",
+                { attrs: { step: "3" } },
+                [
+                  _c("span", [_vm._v("Récapitulatif de la commande :")]),
+                  _vm._v(" "),
+                  _vm._l(_vm.order.orderList, function(product, i) {
+                    return _c(
+                      "v-row",
+                      { key: i, attrs: { dense: "", cols: "12" } },
+                      [
+                        _c(
+                          "v-col",
+                          [
+                            _c("v-card", [
+                              _c(
+                                "div",
+                                { staticClass: "d-flex justify-space-between" },
+                                [
+                                  _c(
+                                    "div",
+                                    [
+                                      _c("v-card-title", {
+                                        staticClass: "headline",
+                                        domProps: {
+                                          textContent: _vm._s(product.name)
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-card-subtitle", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            "Prix:" + product.price
+                                          )
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-card-subtitle", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            "Nombre de produit:" +
+                                              product.quantity
+                                          )
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-card-subtitle", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            "Total:" +
+                                              product.price * product.quantity
+                                          )
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { md: "12" } },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "success" },
+                              on: { click: _vm.process }
+                            },
+                            [_vm._v("Payer")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { text: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.e1 = 2
+                        }
+                      }
+                    },
+                    [_vm._v("Retour")]
+                  )
+                ],
+                2
+              )
             ],
             1
           )
@@ -85301,7 +85585,7 @@ function replaceQuantity(product) {
   storeBasket(basket);
 }
 
-function sendOrder() {
+function sendOrder(order) {
   var basket = getBasket();
   var ordersList = [];
 
@@ -85313,7 +85597,9 @@ function sendOrder() {
   }
 
   return _clientService_js__WEBPACK_IMPORTED_MODULE_1__["clientService"].post('/api/order', {
-    order: ordersList
+    order: order.orderList,
+    adresseLivraison: order.adresseLivraison,
+    adresseFacturation: order.adresseFacturation
   });
 }
 /**
@@ -85944,7 +86230,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************************************!*\
   !*** ./resources/js/dashboard/views/components/Stepper.js?vue&type=script&lang=js& ***!
   \*************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85958,15 +86244,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************!*\
   !*** ./resources/js/dashboard/views/components/Stepper.vue ***!
   \*************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Stepper_vue_vue_type_template_id_11bdbbdc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Stepper.vue?vue&type=template&id=11bdbbdc& */ "./resources/js/dashboard/views/components/Stepper.vue?vue&type=template&id=11bdbbdc&");
 /* harmony import */ var _Stepper_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Stepper.js?vue&type=script&lang=js& */ "./resources/js/dashboard/views/components/Stepper.js?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Stepper_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Stepper_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 

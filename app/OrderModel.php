@@ -19,4 +19,10 @@ class OrderModel extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+    function adresseLivraison(){
+        return $this->belongsTo(AdresseModel::class, 'id_adresse_livraison');
+    }
+    function adresseFacturation(){
+        return $this->belongsTo(AdresseModel::class, 'id_adresse_facturation');
+    }
 }
