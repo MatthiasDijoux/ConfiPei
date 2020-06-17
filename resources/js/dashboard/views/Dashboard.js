@@ -1,4 +1,3 @@
-import Axios from "axios";
 import dialogProduct from '../views/components/dialogProduct.vue';
 import {clientService} from '../_services/clientService';
 export default {

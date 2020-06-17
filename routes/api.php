@@ -24,9 +24,14 @@ Route::middleware(['auth:api', 'roles:Producteur'])->prefix('producers')->group(
     Route::get('products', 'ProductController@getOfProducer');
     Route::post('products', 'ProductController@createOrUpdate');
 });
-Route::middleware(['auth:api', 'roles:Producteur|Client'])->group(function(){
-    Route::post('/order', 'OrderController@sendOrder');
+Route::middleware(['auth:api', 'roles:Producteur|Client'])->group(function () {
+    Route::post('orders', 'OrderController@create');
+    /* Route::get('orders', '');
+    Route::get('orders/{id}', '')->where('id', ''); */
+    Route::post('orders/{id}/paiement', 'OrderController@paiement')->where('id', '[0-9]+');
 });
+
+
 Route::middleware('auth:api')->get('profil', 'UserController@index');
 
 Route::get('products', 'ProductController@getProduct');

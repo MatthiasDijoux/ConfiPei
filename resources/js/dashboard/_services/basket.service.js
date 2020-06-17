@@ -63,10 +63,10 @@ function sendOrder(order) {
         obj['quantity'] = basket[i].quantity
         ordersList.push(obj)
     }
-    return clientService.post('/api/order', {
+    return clientService.post('/api/orders', {
         order: order.orderList,
         adresseLivraison: order.adresseLivraison,
-        adresseFacturation: order.adresseFacturation
+        adresseFacturation: order.adresseFacturation,
     })
 }
 
