@@ -13,16 +13,20 @@
       </v-container>
     </v-content>
     <Footer />
+    <snackbar />
   </v-app>
 </template>
 
 <script>
-import Navbar from '../navigation/Navbar';
-import Footer from '../navigation/Footer';
+import Navbar from "../navigation/Navbar";
+import Footer from "../navigation/Footer";
+import Snackbar from "../views/components/Snackbar.vue";
+
 export default {
   components: {
     Footer,
     Navbar,
+    Snackbar
   }
 };
 </script>

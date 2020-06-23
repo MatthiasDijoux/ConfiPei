@@ -1,7 +1,7 @@
 import { clientService } from "../_services/clientService";
 import addToBasket from "../views/components/addToBasket.vue";
 export default {
-    components:{
+    components: {
         addToBasket,
     },
     data: () => ({
@@ -15,7 +15,7 @@ export default {
     watch: {
         search: function (val) {
             if (val && val.length > 2) {
-                clientService.get('/api/fruits',  {query: val } )
+                clientService.get('/api/fruits', { query: val })
                     .then(({ data }) => {
                         this.loading = false
 

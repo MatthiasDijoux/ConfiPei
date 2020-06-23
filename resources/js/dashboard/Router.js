@@ -10,6 +10,7 @@ import { authenticationService } from '../dashboard/_services/authentication.ser
 import Profil from './views/Profil.vue';
 import Basket from './views/basketOrder.vue';
 import Stepper from './views/components/Stepper.vue';
+import producerManagement from './views/producerManagement.vue';
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -31,6 +32,11 @@ const router = new VueRouter({
             component: Basket,
         },
         {
+            path: '/producerManagement',
+            name: 'producerManagement',
+            component: producerManagement,
+        },
+        {
             path: '/dashboardProducteur',
             name: 'producteur',
             component: producerProfile,
@@ -40,7 +46,7 @@ const router = new VueRouter({
             path: '/confirmation',
             name: 'stepper',
             component: Stepper,
-            meta: { authorize: [Role.Producteur,Role.Admin,Role.Client] }
+            meta: { authorize: [Role.Producteur, Role.Admin, Role.Client] }
         },
         {
             path: '/login',
@@ -61,7 +67,6 @@ const router = new VueRouter({
             name: 'dashboard',
             component: Dashboard,
             meta: { authorize: [Role.Admin] }
-
         },
     ],
 

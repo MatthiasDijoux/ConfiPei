@@ -38,3 +38,4 @@ Route::get('products', 'ProductController@getProduct');
 Route::get('fruits', 'FruitController@index');
 Route::post('/login', 'AuthController@login');
 Route::middleware('auth:api')->get('/logout', 'AuthController@logout');
+

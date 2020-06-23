@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'fruits' => FruitResource::collection($this->whenLoaded('fruits')),
             'prix' => $this->prix,
             'image' => $this->image,
+            'quantite' => $this->quantite,
         ];
     }
 }

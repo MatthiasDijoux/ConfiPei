@@ -15,7 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/storage/images/{filename}', 'imageController@index');
-
+Route::get('/testMail', function () {
+    return new App\Mail\Contact([
+        'nom' => 'toto',
+        'email' => 'test.toto@gmail.com',
+        'message' => 'bonjour voici le mail',
+    ]);
+});
 Route::prefix('/')->group(function () {
     Route::get('/', 'ProductController@index');
     Route::get('/{any}', 'ProductController@index')->where('any', '.*');

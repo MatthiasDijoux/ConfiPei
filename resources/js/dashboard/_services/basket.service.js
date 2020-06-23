@@ -17,24 +17,34 @@ export const basketService = {
 function add(product, quantity) {
     //Défini l'objet basket
     let basket = getBasket()
-
+    let _quantity = 0;
+    let snackbar = [];
     //Vérifie que l'objet basket contenant le produit existe ou non
-    //si non, on définie l'objet    
+    //si non, on définie l'objet   
     if (!_.hasIn(basket, buildKey(product))) {
         basket[buildKey(product)] = {
             id: product.id,
             name: product.name,
-            quantity: parseInt(quantity),
             price: product.prix
         }
+        _quantity = parseInt(quantity);
     }
     //si  oui, on incrémente la quantité actuelle
     else {
-        basket[buildKey(product)].quantity += parseInt(quantity)
+        _quantity = basket[buildKey(product)].quantity + parseInt(quantity)
     }
+    if (_quantity > product.quantite) {
+        _quantity = product.quantite
+    }
+    if (_quantity > 10) {
+        _quantity = 10
+    }
+    snackbar['msg'] = _quantity + ' Articles ajouté au panier'
+
+    basket[buildKey(product)]['quantity'] = _quantity
+    EventBus.$emit('snackError', snackbar);
     //on appelle la fonction store pour l'ajouté au local storage
     storeBasket(basket)
-
 }
 /**
  * Cette fonction nous set à remplacer la quantité du produit précédent 

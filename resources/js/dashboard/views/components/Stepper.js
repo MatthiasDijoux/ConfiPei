@@ -8,7 +8,7 @@ export default {
             source: null,
             e1: 1,
             valid: true,
-            priceTotal:[],
+            priceTotal: [],
             order: {
                 orderList: {
                 },
@@ -34,6 +34,7 @@ export default {
             ],
             selectable: false,
             orderId: '',
+            status: '',
         }
     },
 
@@ -56,7 +57,7 @@ export default {
             clientService.post('/api/orders/' + this.orderId + '/paiement', {
                 id: this.source.id
             }).then(response => {
-                console.log(response);
+                console.log(response.data.status.order_status)
             })
         }
     }

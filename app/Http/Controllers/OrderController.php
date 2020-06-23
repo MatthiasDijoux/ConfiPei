@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\AdresseModel;
 use App\Http\Resources\OrderResource;
+use App\Mail\Contact;
 use App\OrderModel;
 use App\ProductModel;
 use App\StatusModel;
 use App\User;
-use Cartalyst\Stripe\Api\Products;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -28,8 +29,16 @@ class OrderController extends Controller
                 'adresseFacturation' => 'required',
             ]
         )->validate();
+        $prixTotal = [];
+        $i = 0;
+        foreach ($orders['order'] as $order) {
+            $i = $i + 1;
+            $prixTotal[$i] = $order['price'] * $order['quantity'];
+        }
+        $prixTotal = array_sum($prixTotal);
         $user = $request->user();
         DB::beginTransaction();
+
         try {
             if ($user) {
                 $createOrder = new OrderModel;
@@ -47,6 +56,14 @@ class OrderController extends Controller
             return $e->getMessage();
         }
         DB::commit();
+        Mail::to($user->mail)
+            ->send(new Contact([
+                'nom' => $user->username,
+                'order' => $createOrder,
+                'adresse_livraison' => $orders['adresseLivraison'],
+                'adresse_facturation' => $orders['adresseFacturation'],
+                'prix_total' => $prixTotal,
+            ]));
         return new OrderResource($createOrder);
     }
 
@@ -102,10 +119,7 @@ class OrderController extends Controller
             ]
         )->validate();
         $order = OrderModel::find($id);
-        $status = StatusModel::with(['orders'])->find(2);
 
-        $order->orderStatus()->associate($status);
-        $order->save();
         try {
             $charge = Stripe::charges()->create([
                 'amount' => 20,
@@ -119,9 +133,15 @@ class OrderController extends Controller
                     'data3' => 'metadata 3'
                 ],
             ]);
-            return $charge;
+            $status = StatusModel::with(['orders'])->find(2);
+            $order->orderStatus()->associate($status);
+            $order->save();
+            return ['paiement' => $charge, 'status' => $order];
         } catch (Exception $e) {
-            return $e;
+            $status = StatusModel::with(['orders'])->find(1);
+            $order->orderStatus()->associate($status);
+            $order->save();
+            return ['error' => $e, 'status' => $order];
         }
     }
 }

@@ -9,6 +9,7 @@
       <v-btn to="/">Home</v-btn>
       <v-btn to="/dashboard">Dashboard</v-btn>
       <v-btn to="/dashboardProducteur">Profil Producteur</v-btn>
+      <v-btn to="/producerManagement">Gestion des producteurs</v-btn>
       <v-btn to="/confitures">Liste Confitures</v-btn>
       <v-btn to="/Profil">Profil</v-btn>
       <basket />
